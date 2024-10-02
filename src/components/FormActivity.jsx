@@ -220,7 +220,7 @@ function FormActivity() {
               </DialogContent>
               <DialogActions>
                 <Button onClick={hsndleClose}>No</Button>
-                <Button onClick={hsndleClose}>Si</Button>
+                <Button onClick={hsndleClose} autoFocus>Si</Button>
               </DialogActions>
           </Dialog>
           <Grid container spacing={2}>
