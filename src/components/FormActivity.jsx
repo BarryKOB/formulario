@@ -25,16 +25,20 @@ import Rating from '@mui/material/Rating';
 import FormGroup from '@mui/material/FormGroup';
 import Checkbox from '@mui/material/Checkbox';
 
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+
 import { useState } from 'react'
 import Stack from '@mui/material/Stack';
 import Grid2 from '@mui/material/Grid2';
-import { Chip } from '@mui/material'
+import { Chip, DialogActions, DialogContent, DialogContentText } from '@mui/material'
 
 
 
 function FormActivity() {
   const inicialData = {name:'', apellido:'', age:'', languaje: '', rating: 0, check: false, genero: ''}
   const [data,setData] = useState(inicialData)
+  const [open,setOpen] = useState(false)
 
   const handleSubmit = (e) => {
     //Para que no mande el formulario, sino que haga lo que yo le diga
@@ -95,6 +99,14 @@ function FormActivity() {
     setData(inicialData)
   };
 
+  const dialogo = () => {
+    setOpen(true);
+  }
+
+  const hsndleClose = () => {
+    setOpen(false);
+  }
+
   return(
     <>
     <Container sx={{marginBottom: "70px"}}>
@@ -145,9 +157,9 @@ function FormActivity() {
                   value = {data.genero}
                   onChange={handleChangeGenero}
                 >
-                  <FormControlLabel value="femenino" control={<Radio />} label="Femenino" />
-                  <FormControlLabel value="masculino" control={<Radio />} label="Masculino" />
-                  <FormControlLabel value="otro" control={<Radio />} label="Otro" />
+                  <FormControlLabel required value="femenino" control={<Radio />} label="Femenino" />
+                  <FormControlLabel required value="masculino" control={<Radio />} label="Masculino" />
+                  <FormControlLabel required value="otro" control={<Radio />} label="Otro" />
                 </RadioGroup>
               </FormControl>
             </Grid>
@@ -155,12 +167,12 @@ function FormActivity() {
               <FormControl fullWidth>
                 <InputLabel id="demo-simple-select-label">Lenguaje de programacion favorito</InputLabel>
                 <Select
+                  required
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
                   value={data.languaje}
                   label="Lenguaje de programacion favorito"
                   onChange={handleChangelanguaje}
-                  fullWidth
                 >
                   <MenuItem value={"Javascript"}>Javascript</MenuItem>
                   <MenuItem value={"Java"}>Java</MenuItem>
@@ -187,27 +199,44 @@ function FormActivity() {
           <Grid>
             <FormGroup>
               <FormControlLabel
+               id='check'
                control={<Checkbox checked={data.check} />} 
                onChange={handleChangeCheck}
-               label="Aceptar terminos y condiciones" />
+               label="Aceptar terminos y condiciones" 
+               />
             </FormGroup>
           </Grid> 
-            <Grid container spacing={2}>
-              <Grid size={{xs:12, sm:6, md:6}}>
-                  <Button type="submit" variant='contained' fullWidth>Enviar</Button>
-              </Grid>
-              <Grid size={{xs:12, sm:6, md:6}}>
-                  <Button type="button" onClick={handleClear} variant='outlined' fullWidth>Limpiar</Button>
-              </Grid>
+          <Dialog 
+              open={open}
+              onClose={hsndleClose}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
+            >
+              <DialogTitle>{"Confirmacion"}</DialogTitle>
+              <DialogContent>
+                <DialogContentText>
+                  ¿Estas seguro de mandar la encuesta?
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={hsndleClose}>No</Button>
+                <Button onClick={hsndleClose}>Si</Button>
+              </DialogActions>
+          </Dialog>
+          <Grid container spacing={2}>
+            <Grid size={{xs:12, sm:6, md:6}}>
+                <Button disabled={!data.check} id='but' onClick={dialogo} type="submit" variant='contained' fullWidth>Enviar</Button>
             </Grid>
-          </Box>
+            <Grid size={{xs:12, sm:6, md:6}}>
+                <Button type="button" onClick={handleClear} variant='outlined' fullWidth>Limpiar</Button>
+            </Grid>
+          </Grid>
+        </Box>
       </Paper>
     </Container>
     </>
   );
-
 }
-  
    
   
 
